@@ -7,8 +7,10 @@ const Profile = ({ onBack }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({
     name: user?.name || '',
-    email: user?.email || ''
+    email: user?.email || '',
+    avatar: user?.avatar || null
   });
+  const [avatarPreview, setAvatarPreview] = useState(null);
 
   if (!user) return null;
 
@@ -22,6 +24,60 @@ const Profile = ({ onBack }) => {
   const handleSave = () => {
     updateProfile(editData);
     setIsEditing(false);
+    setAvatarPreview(null);
+  };
+
+  const handleAvatarChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Проверяем тип файла
+      if (!file.type.startsWith('image/')) {
+        alert('Пожалуйста, выберите изображение');
+        return;
+      }
+
+      // Проверяем размер файла (максимум 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Размер файла должен быть меньше 5MB');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          // Создаем canvas для изменения размера изображения
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          // Устанавливаем размер 300x300 для аватара
+          const size = 300;
+          canvas.width = size;
+          canvas.height = size;
+          
+          // Вычисляем размеры для обрезки (квадрат по центру)
+          const sourceSize = Math.min(img.width, img.height);
+          const sourceX = (img.width - sourceSize) / 2;
+          const sourceY = (img.height - sourceSize) / 2;
+          
+          // Рисуем изображение
+          ctx.drawImage(img, sourceX, sourceY, sourceSize, sourceSize, 0, 0, size, size);
+          
+          // Получаем data URL
+          const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          
+          setAvatarPreview(resizedDataUrl);
+          setEditData({...editData, avatar: resizedDataUrl});
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeAvatar = () => {
+    setAvatarPreview(null);
+    setEditData({...editData, avatar: null});
   };
 
   const handleLogout = () => {
@@ -67,6 +123,33 @@ const Profile = ({ onBack }) => {
             
             {isEditing ? (
               <div className="edit-form">
+                <div className="avatar-edit-section">
+                  <div className="avatar-preview">
+                    {(avatarPreview || editData.avatar) ? (
+                      <img src={avatarPreview || editData.avatar} alt="Avatar preview" />
+                    ) : (
+                      <span className="avatar-initials">
+                        {editData.name.split(' ').map(n => n[0]).join('').toUpperCase() || '?'}
+                      </span>
+                    )}
+                  </div>
+                  <div className="avatar-controls">
+                    <label className="avatar-upload-btn">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleAvatarChange}
+                        style={{ display: 'none' }}
+                      />
+                      📷 Выбрать фото
+                    </label>
+                    {(avatarPreview || editData.avatar) && (
+                      <button type="button" onClick={removeAvatar} className="avatar-remove-btn">
+                        🗑️ Удалить
+                      </button>
+                    )}
+                  </div>
+                </div>
                 <input
                   type="text"
                   value={editData.name}
@@ -81,7 +164,15 @@ const Profile = ({ onBack }) => {
                 />
                 <div className="edit-buttons">
                   <button onClick={handleSave} className="save-btn">Сохранить</button>
-                  <button onClick={() => setIsEditing(false)} className="cancel-btn">Отмена</button>
+                  <button onClick={() => {
+                    setIsEditing(false);
+                    setAvatarPreview(null);
+                    setEditData({
+                      name: user?.name || '',
+                      email: user?.email || '',
+                      avatar: user?.avatar || null
+                    });
+                  }} className="cancel-btn">Отмена</button>
                 </div>
               </div>
             ) : (
