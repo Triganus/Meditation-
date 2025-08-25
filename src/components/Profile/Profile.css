@@ -262,6 +262,17 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
+.stat-card.clickable {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.stat-card.clickable:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
 .stat-icon {
   font-size: 32px;
   width: 50px;

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNavigation } from '../../contexts/NavigationContext';
 import './Notes.css';
 
 const Notes = ({ onBack }) => {
   const { user, addNote, updateNote, deleteNote } = useAuth();
+  const { getPreviousView, canGoBack } = useNavigation();
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [newNote, setNewNote] = useState({
@@ -94,7 +96,9 @@ const Notes = ({ onBack }) => {
   return (
     <div className="notes-page">
       <div className="notes-header">
-        <button className="back-btn" onClick={onBack}>←</button>
+        <button className="back-btn" onClick={onBack} title={`Вернуться к ${getPreviousView() === 'home' ? 'главной' : getPreviousView()}`}>
+          ←
+        </button>
         <h2>Заметки</h2>
         <button 
           className="add-note-btn" 

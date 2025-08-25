@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import './App.css';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { NavigationProvider, useNavigation } from './contexts/NavigationContext';
 import HomePage from './components/HomePage';
 import MeditationTimer from './components/MeditationTimer';
 import SoundLibrary from './components/SoundLibrary';
@@ -11,10 +12,10 @@ import Explore from './components/Explore/Explore';
 import Notes from './components/Notes/Notes';
 
 const AppContent = () => {
-  const [currentView, setCurrentView] = useState('home');
   const [selectedSound, setSelectedSound] = useState(null);
   const [authModal, setAuthModal] = useState(null);
   const { user, updateUserStats } = useAuth();
+  const { currentView, navigateTo, goBack } = useNavigation();
 
   const handleMeditationComplete = useCallback((sessionData) => {
     if (user) {
@@ -28,26 +29,26 @@ const AppContent = () => {
         return (
           <MeditationTimer 
             selectedSound={selectedSound} 
-            onBack={() => setCurrentView('home')}
+            onBack={goBack}
             onSessionComplete={handleMeditationComplete}
           />
         );
       case 'sounds':
-        return <SoundLibrary onBack={() => setCurrentView('home')} onSelectSound={setSelectedSound} />;
+        return <SoundLibrary onBack={goBack} onSelectSound={setSelectedSound} />;
       case 'explore':
-        return <Explore onBack={() => setCurrentView('home')} />;
+        return <Explore onBack={goBack} />;
       case 'notes':
-        return <Notes onBack={() => setCurrentView('home')} />;
+        return <Notes onBack={goBack} />;
       case 'profile':
         return user ? (
-          <Profile onBack={() => setCurrentView('home')} />
+          <Profile onBack={goBack} />
         ) : (
           setAuthModal('login')
         );
       default:
         return (
           <HomePage 
-            onNavigate={setCurrentView} 
+            onNavigate={navigateTo} 
             onAuthClick={setAuthModal}
             user={user}
           />
@@ -79,7 +80,9 @@ const AppContent = () => {
 function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <NavigationProvider>
+        <AppContent />
+      </NavigationProvider>
     </AuthProvider>
   );
 }

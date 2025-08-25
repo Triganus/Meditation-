@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNavigation } from '../../contexts/NavigationContext';
 import './Profile.css';
 
 const Profile = ({ onBack }) => {
   const { user, logout, updateProfile } = useAuth();
+  const { navigateWithReturn } = useNavigation();
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({
     name: user?.name || '',
@@ -213,11 +215,11 @@ const Profile = ({ onBack }) => {
             </div>
           </div>
           
-          <div className="stat-card">
-            <div className="stat-icon">🎵</div>
+          <div className="stat-card clickable" onClick={() => navigateWithReturn('notes')}>
+            <div className="stat-icon">📝</div>
             <div className="stat-content">
-              <h3>{user.stats.favoriteSound || 'Не выбрано'}</h3>
-              <p>Любимый звук</p>
+              <h3>{user.notes?.length || 0}</h3>
+              <p>Заметок создано</p>
             </div>
           </div>
         </div>
