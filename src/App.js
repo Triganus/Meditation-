@@ -8,6 +8,7 @@ import Profile from './components/Profile/Profile';
 import LoginForm from './components/Auth/LoginForm';
 import RegisterForm from './components/Auth/RegisterForm';
 import Explore from './components/Explore/Explore';
+import Notes from './components/Notes/Notes';
 
 const AppContent = () => {
   const [currentView, setCurrentView] = useState('home');
@@ -35,6 +36,8 @@ const AppContent = () => {
         return <SoundLibrary onBack={() => setCurrentView('home')} onSelectSound={setSelectedSound} />;
       case 'explore':
         return <Explore onBack={() => setCurrentView('home')} />;
+      case 'notes':
+        return <Notes onBack={() => setCurrentView('home')} />;
       case 'profile':
         return user ? (
           <Profile onBack={() => setCurrentView('home')} />

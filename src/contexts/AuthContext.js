@@ -37,7 +37,8 @@ export const AuthProvider = ({ children }) => {
         lastSessionDate: null,
         favoriteSound: null,
         achievements: []
-      }
+      },
+      notes: []
     };
     
     setUser(newUser);
@@ -133,6 +134,44 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('meditationUser', JSON.stringify(updatedUser));
   };
 
+  const addNote = (noteData) => {
+    if (!user) return;
+
+    const updatedUser = {
+      ...user,
+      notes: [...(user.notes || []), noteData]
+    };
+
+    setUser(updatedUser);
+    localStorage.setItem('meditationUser', JSON.stringify(updatedUser));
+  };
+
+  const updateNote = (noteId, noteData) => {
+    if (!user) return;
+
+    const updatedUser = {
+      ...user,
+      notes: (user.notes || []).map(note => 
+        note.id === noteId ? { ...note, ...noteData } : note
+      )
+    };
+
+    setUser(updatedUser);
+    localStorage.setItem('meditationUser', JSON.stringify(updatedUser));
+  };
+
+  const deleteNote = (noteId) => {
+    if (!user) return;
+
+    const updatedUser = {
+      ...user,
+      notes: (user.notes || []).filter(note => note.id !== noteId)
+    };
+
+    setUser(updatedUser);
+    localStorage.setItem('meditationUser', JSON.stringify(updatedUser));
+  };
+
   const value = {
     user,
     isLoading,
@@ -140,7 +179,10 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     updateUserStats,
-    updateProfile
+    updateProfile,
+    addNote,
+    updateNote,
+    deleteNote
   };
 
   return (

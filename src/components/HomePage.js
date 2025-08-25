@@ -59,7 +59,7 @@ const HomePage = ({ onNavigate, onAuthClick, user }) => {
       </div>
 
       <div className="action-buttons">
-        <button className="action-btn blue" onClick={() => onNavigate('timer')}>
+        <button className="action-btn blue" onClick={() => onNavigate('notes')}>
           <span>🗒️</span>
           <div>
             <p>Сделать заметку</p>
