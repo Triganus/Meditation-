@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './DailyQuote.css';
 
 const DailyQuote = () => {
@@ -160,12 +160,12 @@ const DailyQuote = () => {
   ];
 
   // Функция для получения цитаты дня на основе даты
-  const getDailyQuote = () => {
+  const getDailyQuote = useCallback(() => {
     const today = new Date();
     const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
     const quoteIndex = dayOfYear % quotes.length;
     return quotes[quoteIndex];
-  };
+  }, [quotes]);
 
   // Получение иконки для категории
   const getCategoryIcon = (category) => {
@@ -206,7 +206,7 @@ const DailyQuote = () => {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [getDailyQuote]);
 
   if (!currentQuote) return null;
 
