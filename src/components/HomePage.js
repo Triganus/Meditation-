@@ -83,10 +83,6 @@ const HomePage = ({ onNavigate, onAuthClick, user }) => {
         <div className="main-image"></div>
       </div>
 
-      <div className="author-credit-static">
-        <p>Сделано с ❤️ by <a href="https://github.com/triganus" target="_blank" rel="noopener noreferrer">Pavel</a></p>
-      </div>
-
       <div className="bottom-nav">
         <div className="nav-item active">
           <span>🏠</span>
