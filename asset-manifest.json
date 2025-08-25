@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Meditation-/static/css/main.dc79e457.css",
+    "main.js": "/Meditation-/static/js/main.d39f983f.js",
+    "index.html": "/Meditation-/index.html",
+    "main.dc79e457.css.map": "/Meditation-/static/css/main.dc79e457.css.map",
+    "main.d39f983f.js.map": "/Meditation-/static/js/main.d39f983f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.dc79e457.css",
+    "static/js/main.d39f983f.js"
+  ]
+}
