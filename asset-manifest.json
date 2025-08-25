@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/Meditation-/static/css/main.9ae2bf0e.css",
-    "main.js": "/Meditation-/static/js/main.26a0aa38.js",
+    "main.css": "/Meditation-/static/css/main.2a5cdfcd.css",
+    "main.js": "/Meditation-/static/js/main.aa43deaa.js",
     "index.html": "/Meditation-/index.html",
-    "main.9ae2bf0e.css.map": "/Meditation-/static/css/main.9ae2bf0e.css.map",
-    "main.26a0aa38.js.map": "/Meditation-/static/js/main.26a0aa38.js.map"
+    "main.2a5cdfcd.css.map": "/Meditation-/static/css/main.2a5cdfcd.css.map",
+    "main.aa43deaa.js.map": "/Meditation-/static/js/main.aa43deaa.js.map"
   },
   "entrypoints": [
-    "static/css/main.9ae2bf0e.css",
-    "static/js/main.26a0aa38.js"
+    "static/css/main.2a5cdfcd.css",
+    "static/js/main.aa43deaa.js"
   ]
 }
