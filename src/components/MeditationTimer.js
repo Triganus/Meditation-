@@ -8,6 +8,7 @@ const MeditationTimer = ({ selectedSound, onBack, onSessionComplete }) => {
   const [initialTime] = useState(300);
   const intervalRef = useRef(null);
   const audioGeneratorRef = useRef(null);
+  const audioRef = useRef(null);
 
   useEffect(() => {
     if (isRunning && time > 0) {
@@ -15,6 +16,11 @@ const MeditationTimer = ({ selectedSound, onBack, onSessionComplete }) => {
         setTime(prevTime => {
           if (prevTime <= 1) {
             setIsRunning(false);
+            // Останавливаем реальный аудио файл
+            if (audioRef.current) {
+              audioRef.current.pause();
+            }
+            // Останавливаем Web Audio API
             if (audioGeneratorRef.current) {
               audioGeneratorRef.current.stop();
             }
@@ -59,25 +65,69 @@ const MeditationTimer = ({ selectedSound, onBack, onSessionComplete }) => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const playSelectedSound = () => {
-    if (!audioGeneratorRef.current || !selectedSound) return;
+  const playSelectedSound = async () => {
+    if (!selectedSound) return;
 
-    const soundMap = {
-      'Капли дождя': 'playRain',
-      'Шум волн': 'playOcean',
-      'Лес': 'playForest',
-      'Тибетская Чаша': 'playBowl',
-      'Дровяной Камин': 'playFireplace',
-      'Камин': 'playFireplace',
-      'Под водой': 'playOcean',
-      'Глубокое раздумье': 'playBowl',
-      'Неистовая природа': 'playForest',
-      'Под Дождем': 'playRain'
+    // Сначала пробуем воспроизвести реальный аудио файл
+    const soundFileMap = {
+      'Капли дождя': 'rain',
+      'Под Дождем': 'rain',
+      'Шум волн': 'ocean',
+      'Под водой': 'ocean',
+      'Лес': 'forest',
+      'Неистовая природа': 'forest',
+      'Тибетская Чаша': 'tibetan-bowl',
+      'Дровяной Камин': 'fireplace',
+      'Камин': 'fireplace'
     };
 
-    const soundMethod = soundMap[selectedSound.name] || 'playRain';
-    if (audioGeneratorRef.current[soundMethod]) {
-      audioGeneratorRef.current[soundMethod]();
+    const fileName = soundFileMap[selectedSound.name];
+    
+    if (fileName && audioRef.current) {
+      try {
+        // Пробуем разные форматы
+        const formats = ['wav', 'mp3', 'ogg'];
+        let audioLoaded = false;
+        
+        for (const format of formats) {
+          try {
+            audioRef.current.src = `/sounds/${fileName}.${format}`;
+            await audioRef.current.load();
+            await audioRef.current.play();
+            audioLoaded = true;
+            console.log(`Воспроизводится реальный файл: ${fileName}.${format}`);
+            break;
+          } catch (error) {
+            console.log(`Файл ${fileName}.${format} не найден`);
+          }
+        }
+        
+        if (!audioLoaded) {
+          throw new Error('Реальные файлы не найдены');
+        }
+      } catch (error) {
+        console.log('Используется Web Audio API');
+        // Если реальный файл не найден, используем Web Audio API
+        if (audioGeneratorRef.current) {
+          const soundMap = {
+            'Капли дождя': 'playRain',
+            'Шум волн': 'playOcean',
+            'Лес': 'playForest',
+            'Тибетская Чаша': 'playBowl',
+            'Дровяной Камин': 'playFireplace',
+            'Камин': 'playFireplace',
+            'Под водой': 'playOcean',
+            'Глубокое раздумье': 'playBowl',
+            'Неистовая природа': 'playForest',
+            'Под Дождем': 'playRain'
+          };
+
+          const soundMethod = soundMap[selectedSound.name] || 'playRain';
+          if (audioGeneratorRef.current[soundMethod]) {
+            audioGeneratorRef.current[soundMethod]();
+          }
+        }
+      }
     }
   };
 
@@ -90,6 +140,11 @@ const MeditationTimer = ({ selectedSound, onBack, onSessionComplete }) => {
 
   const handlePause = () => {
     setIsRunning(false);
+    // Останавливаем реальный аудио файл
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    // Останавливаем Web Audio API
     if (audioGeneratorRef.current) {
       audioGeneratorRef.current.stop();
     }
@@ -98,6 +153,12 @@ const MeditationTimer = ({ selectedSound, onBack, onSessionComplete }) => {
   const handleReset = () => {
     setIsRunning(false);
     setTime(initialTime);
+    // Останавливаем реальный аудио файл
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    // Останавливаем Web Audio API
     if (audioGeneratorRef.current) {
       audioGeneratorRef.current.stop();
     }
@@ -177,7 +238,13 @@ const MeditationTimer = ({ selectedSound, onBack, onSessionComplete }) => {
         </button>
       </div>
 
-
+      {/* Скрытый аудио элемент для реальных файлов */}
+      <audio 
+        ref={audioRef}
+        loop
+        style={{ display: 'none' }}
+        preload="none"
+      />
     </div>
   );
 };
