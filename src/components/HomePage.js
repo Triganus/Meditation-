@@ -103,6 +103,10 @@ const HomePage = ({ onNavigate, onAuthClick, user }) => {
           <p>Профиль</p>
         </div>
       </div>
+
+      <div className="author-credit">
+        <p>Сделано с ❤️ by <a href="https://github.com/triganus" target="_blank" rel="noopener noreferrer">Pavel</a></p>
+      </div>
     </div>
   );
 };
