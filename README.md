@@ -341,7 +341,7 @@ npm run deploy
 ## 📞 Поддержка
 
 Если у вас есть вопросы или предложения:
-- 📧 Email: support@meditation-app.com
+- 📧 Email: triganus2312000@gmail.com 
 - 🐛 Issues: [GitHub Issues](https://github.com/pavel/meditation-app/issues)
 - 💬 Discussions: [GitHub Discussions](https://github.com/pavel/meditation-app/discussions)
 
