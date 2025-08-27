@@ -10,6 +10,7 @@ import LoginForm from './components/Auth/LoginForm';
 import RegisterForm from './components/Auth/RegisterForm';
 import Explore from './components/Explore/Explore';
 import Notes from './components/Notes/Notes';
+import YogaExercises from './components/YogaExercises/YogaExercises';
 
 const AppContent = () => {
   const [selectedSound, setSelectedSound] = useState(null);
@@ -39,6 +40,8 @@ const AppContent = () => {
         return <Explore onBack={goBack} />;
       case 'notes':
         return <Notes onBack={goBack} />;
+      case 'yoga':
+        return <YogaExercises onBack={goBack} />;
       case 'profile':
         return user ? (
           <Profile onBack={goBack} />

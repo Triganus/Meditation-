@@ -92,9 +92,9 @@ const HomePage = ({ onNavigate, onAuthClick, user }) => {
           <span>📊</span>
           <p>Исследуй</p>
         </div>
-        <div className="nav-item">
-          <span>😴</span>
-          <p>Сон</p>
+        <div className="nav-item" onClick={() => onNavigate('yoga')}>
+          <span>🧘‍♀️</span>
+          <p>Йога</p>
         </div>
         <div className="nav-item" onClick={() => onNavigate('sounds')}>
           <span>🎵</span>
