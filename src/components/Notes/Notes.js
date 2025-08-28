@@ -5,7 +5,7 @@ import './Notes.css';
 
 const Notes = ({ onBack }) => {
   const { user, addNote, updateNote, deleteNote } = useAuth();
-  const { getPreviousView, canGoBack } = useNavigation();
+  const { getPreviousView } = useNavigation();
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [newNote, setNewNote] = useState({

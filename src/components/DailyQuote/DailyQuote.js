@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import './DailyQuote.css';
 
 const DailyQuote = () => {
@@ -6,7 +6,7 @@ const DailyQuote = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   // Коллекция вдохновляющих цитат о медитации, жизни и внутреннем мире
-  const quotes = [
+  const quotes = useMemo(() => [
     {
       text: "Мир приходит изнутри. Не ищите его снаружи.",
       author: "Будда",
@@ -157,7 +157,7 @@ const DailyQuote = () => {
       author: "Анонимно",
       category: "breathing"
     }
-  ];
+  ], []);
 
   // Функция для получения цитаты дня на основе даты
   const getDailyQuote = useCallback(() => {

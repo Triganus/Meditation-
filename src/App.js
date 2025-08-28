@@ -43,11 +43,12 @@ const AppContent = () => {
       case 'yoga':
         return <YogaExercises onBack={goBack} />;
       case 'profile':
-        return user ? (
-          <Profile onBack={goBack} />
-        ) : (
-          setAuthModal('login')
-        );
+        if (user) {
+          return <Profile onBack={goBack} />;
+        } else {
+          setAuthModal('login');
+          return null;
+        }
       default:
         return (
           <HomePage 

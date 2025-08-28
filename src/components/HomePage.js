@@ -1,10 +1,8 @@
 import React from 'react';
 import './HomePage.css';
 import DailyQuote from './DailyQuote';
-import { useNavigation } from '../contexts/NavigationContext';
 
 const HomePage = ({ onNavigate, onAuthClick, user }) => {
-  const { navigateWithReturn } = useNavigation();
   return (
     <div className="home-page">
       <div className="header">
